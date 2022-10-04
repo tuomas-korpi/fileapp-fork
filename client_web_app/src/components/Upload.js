@@ -27,12 +27,13 @@ export default function Upload({accessToken}) {
             headers: {
                 "Content-Type": "multipart/form-data",
             }
-        });
+        }).then((res)=>{alert("Upload status: "+ res.status);})
+        
 
 
     }
         return (
-            <div>
+            <div style={{paddingBottom:100}}>
                 <form onSubmit={handleSubmit}>
                     <h1>React File Upload</h1>
                     <input encType="multipart/form-data" name="file" type="file" onChange={handleChange} />

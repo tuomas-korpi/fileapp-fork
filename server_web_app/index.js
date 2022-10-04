@@ -37,7 +37,8 @@ app.get("/getAll", async(req, res) => {
       }
       console.log(req.file);
       
-      uploadBlob(req.file)
+      const up = uploadBlob(req.file)
+      res.send(up)
       
     });
 

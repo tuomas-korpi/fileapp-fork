@@ -27,6 +27,11 @@ const getContainerList = async function () {
 }
 
 const getBlobList = async function (containerName) {
+
+
+
+
+
     console.log("\nListing blobs...");
     const containerClient = blobServiceClient.getContainerClient(containerName);
     //blob properties
@@ -60,6 +65,8 @@ const uploadBlob = async function(blobFile) {
   const blockBlobClient = containerClient.getBlockBlobClient(blobName);
   const uploadBlobResponse = await blockBlobClient.upload(content, content.length);
   console.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);
+  const msg = `Upload block blob ${blobName} successfully`;
+  return msg
 }
 
 
