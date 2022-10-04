@@ -62,6 +62,10 @@ const uploadBlob = async function(blobFile) {
   console.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);
 }
 
+const queryDB = async function() {
+  console.log("new function query db");
+}
+
 
 
 
