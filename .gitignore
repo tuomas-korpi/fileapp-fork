@@ -2,8 +2,7 @@
 
 # dependencies
 */node_modules
-client_web_app/node_modules
-server_web_app/node_modules
+
 */json-mock-api
 
 /.pnp
@@ -13,7 +12,7 @@ server_web_app/node_modules
 /coverage
 
 # production
-/build
+*/build
 
 # misc
 .DS_Store
