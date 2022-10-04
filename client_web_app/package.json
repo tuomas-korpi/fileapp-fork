@@ -41,5 +41,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://api123tuomas.azurewebsites.net"
+  "proxy": "http://localhost:3001"
 }
