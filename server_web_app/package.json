@@ -1,0 +1,25 @@
+{
+  "name": "workingapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@azure/identity": "^3.0.0",
+    "@azure/storage-blob": "^12.11.0",
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.1",
+    "express-fileupload": "^1.4.0",
+    "muller": "^1.1.0",
+    "multer": "^1.4.5-lts.1",
+    "parse-multipart": "^1.0.4"
+  }
+}
