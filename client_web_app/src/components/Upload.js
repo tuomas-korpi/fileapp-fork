@@ -4,8 +4,9 @@ import axios from 'axios';
 
 const baseUrl = "http://localhost:3001"
 
-export default function Create() {
+export default function Upload({accessToken}) {
     const [file, setFile] = useState()
+    let accessToken = accessToken
 
     function handleChange(event) {
         setFile(event.target.files[0])

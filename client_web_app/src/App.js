@@ -3,7 +3,7 @@ import React from "react";
 import "./App.css";
 import { useState, useEffect } from "react";
 import axios from 'axios';
-import Create from "./components/create"
+import Upload from "./components/Upload"
 import blobs from "./components/blobs"
 import { PageLayout } from "./components/PageLayout";
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal  } from "@azure/msal-react";
@@ -30,21 +30,33 @@ function ProfileContent() {
       // Silently acquires an access token which is then attached to a request for Microsoft Graph data
       instance.acquireTokenSilent(request).then((response) => {
           setAccessToken(response.accessToken);
+        
       }).catch((e) => {
           instance.acquireTokenPopup(request).then((response) => {
               setAccessToken(response.accessToken);
           });
       });
+
   }
+
+  if(accessToken == null){
+      RequestAccessToken()
+  }
+  else{
+    console.log("Access token: ", accessToken);
+    console.log("Accounts: ", accounts);
+  }
+
 
   return (
       <>
           <h5 className="card-title">Welcome {name}</h5>
           {accessToken ? 
               <p>Access Token Acquired!</p>
-              :
-              <Button variant="secondary" onClick={RequestAccessToken}>Request Access Token</Button>
+              :        
+              <p>No Access token</p>      
           }
+           <Upload accessToken={accessToken}/>
       </>
   );
 };
@@ -60,10 +72,10 @@ function App() {
 
 
   //GET
-  useEffect(() => {
+/*   useEffect(() => {
     console.log('effect')
     getBlob()
-  }, [])
+  }, []) */
 
   const getBlob = () => {
     setLoading(true);
@@ -92,7 +104,7 @@ function App() {
       <ProfileContent />
         <div className="App">
           <h1>My Files</h1>
-          {loading ? (
+{/*           {loading ? (
             <div>...Data Loading.....</div>
           ) : (
             <table>
@@ -123,13 +135,13 @@ function App() {
                 )
                 }
               </tbody>
-            </table>)}
+            </table>)} */}
 
 
           <hr />
-          <div>
-            <Create />
-          </div>
+          
+         
+          
         </div>
       </AuthenticatedTemplate>
       <UnauthenticatedTemplate>

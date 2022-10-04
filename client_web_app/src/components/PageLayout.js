@@ -9,17 +9,18 @@ import { SignOutButton } from "./SignOutButton";
  */
 export const PageLayout = (props) => {
     const isAuthenticated = useIsAuthenticated();
+    console.log("PageLayot props:", props);
 
     return (
         <>
-            <Navbar bg="primary" variant="dark">
+            <Navbar bg="primary" variant="dark" className="justify-content-between">
                 <a className="navbar-brand" href="/">File App</a>
                 { isAuthenticated ? <SignOutButton /> : <SignInButton /> }
             </Navbar>
-            <h5><center>Welcome to the Microsoft Authentication Library For React Tutorial</center></h5>
-            <br />
-            <br />
+            <div className="App">
             {props.children}
+            </div>
+            
         </>
     );
 };
