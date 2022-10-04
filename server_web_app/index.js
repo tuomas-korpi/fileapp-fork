@@ -17,10 +17,9 @@ app.use(
       credentials: true,
     })
   );
-  app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({ extended: true}));
-  app.use(express.json());
 
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
 
 
 app.get("/getAll", async(req, res) => {
@@ -28,7 +27,7 @@ app.get("/getAll", async(req, res) => {
     res.send(blobs);
   });
 
-  //Multer parses fornData
+  //Multer parses form data
   let multer = require('multer');
   let upload = multer().single("file");
   app.post('/upload', (req, res) => {

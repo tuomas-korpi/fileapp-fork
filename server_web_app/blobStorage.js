@@ -2,7 +2,7 @@ const { DefaultAzureCredential } = require("@azure/identity");
 const { BlobServiceClient, StorageSharedKeyCredential } = require("@azure/storage-blob");
 require('dotenv').config() 
 const account = process.env.STOR_ACCOUNT;
-const accountKey = process.env.STOR_KEY;
+const accountKey = process.env.SHARED_KEY;
 const sharedKeyCredential = new StorageSharedKeyCredential(account, accountKey);
 
 const blobServiceClient = new BlobServiceClient(
