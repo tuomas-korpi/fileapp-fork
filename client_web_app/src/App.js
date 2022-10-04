@@ -3,7 +3,8 @@ import React from "react";
 import "./App.css";
 import { useState, useEffect } from "react";
 import axios from 'axios';
-import { useForm } from "react-hook-form";
+import Create from "./components/create/create"
+import blobs from "./components/blobs"
 
 //change proxy too
 const baseUrl = "http://localhost:3001"
@@ -14,76 +15,67 @@ const baseUrl = "http://localhost:3001"
 
 function App() {
   const [container, setContainers] = useState([]);
-  const [file, setFile] = useState()
+  const [blob, setBlob] = useState([]);
 
 
-/*   useEffect(() => {
-    fetch("/api")
-      .then((res) => res.json())
-      .then((data) => setContainers(data.containers));
-  }, []); */
+  //GET
+  useEffect(() => {
+    console.log('effect')
+    blobs.getAll().then(initialBlobs => {
+      console.log(initialBlobs);
+      setBlob(initialBlobs)
+      console.log(blob);
+    })
+  }, [])
 
 
 
-  function getContainers() {
-    axios.get("/getAll")
-    .then((res) => {
-      setContainers(res.data)
-      console.log(res.data);
+  //DELETE storage based on url - event syncs the sql
+  const handleDelete = (event, id) => {
+    blobs.remove(id).then(returnedBlob => {
+      console.log(returnedBlob);
+      setBlob(blob.filter(p => p.id !== id))
     })
   }
- 
-  const mapBlobs = container.map(cont => 
-    <div key={Math.floor(Math.random() * 99999)}>
-      <h1>{cont.contName}</h1>
-        <ul>
-          {cont.blob.map(blob=>
-            <li key={ Math.floor(Math.random() * 99999)}>
-              Blob name: {blob.name} <br/>
-              Blob url: {blob.url}
-            </li>
-          )}
-        </ul>
-    </div>)
-
-
-function handleChange(event) {
-  setFile(event.target.files[0])
-} 
-
- async function handleSubmit(event) {
-  console.log(typeof file);
-  event.preventDefault()
-  const url = `${baseUrl}/upload`;
-  console.log(file);
-  let formData = new FormData()
-  formData.append('file', file)
-  console.log(formData);
-  await axios({
-      method: 'post',
-      url: url,
-      data: formData,
-      headers: {
-          "Content-Type": "multipart/form-data",
-      }
-  });
-
-}
-
 
 
   return (
     <div className="App">
-      <button onClick={getContainers}>
-        Get All blobs
-      </button>
-      {mapBlobs}
-      <hr/>
-      <form onSubmit={handleSubmit}>
-          <h1>React File Upload</h1>
-          <input encType="multipart/form-data" name="file" type="file" onChange={handleChange}/>
-          <button type="submit">Upload</button>
-        </form>
+
+      <table>
+        <tr>
+          <th>File name</th>
+          <th>File url</th>
+          <th>last modified</th>
+          <th>delete</th>
+        </tr>
+        {blob.map(x =>
+        <tr>
+          <td key={x.file_name}>
+            {x.file_name}
+          </td>
+          <td key={x.file_name}>
+            {x.url}
+          </td>
+          <td key={x.file_name}>
+            {x.lastmodified}
+          </td>
+          <td key={x.file_name}>
+          <button onClick={event => handleDelete(event, x.id)}>
+              delete
+            </button>
+          </td>
+          </tr>
+        )
+  
+        }
+
+
+      </table>
+      <hr />
+      <div>
+        <Create />
+      </div>
 
 
     </div>

@@ -4,6 +4,7 @@
 */node_modules
 client_web_app/node_modules
 server_web_app/node_modules
+*/json-mock-api
 
 /.pnp
 .pnp.js
