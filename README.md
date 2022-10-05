@@ -1,3 +1,18 @@
+# azure infra
+## deploy
+### main
+
+#### create rg var
+```bash
+rg_name=rg-team-1-aug-dev-we
+```
+
+#### deploy complete
+```bash
+az deployment group create --template-file main.bicep --resource-group $rg_name --parameters main.parameters.json --mode Complete
+```
+
+
 # branches
 
 feel free to check branches
