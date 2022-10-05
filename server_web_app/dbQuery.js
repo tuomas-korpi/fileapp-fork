@@ -44,7 +44,7 @@ async function dbInsertTest(fileName, ownerId, blobUrl) {
     .input('OwnerId', sql.NVarChar, ownerId)
     .input('BlobUrl', sql.NVarChar, blobUrl)
     .query('insert into Files (FileName, OwnerId, BlobUrl) values (@FileName, @OwnerId, @BlobUrl)');
-    console.log(request);
+    // console.log(request);
   } catch (err) {
     // ... error checks
     throw err;

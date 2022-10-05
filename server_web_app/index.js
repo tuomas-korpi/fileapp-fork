@@ -83,12 +83,13 @@ app.post('/upload', (req, res) => {
     if (err) {
       res.status(400).send("Something went wrong!");
     }
-    console.log(req.file);
-    console.log("localAccountId: " + req.body.localAccountId)
 
-    const up = uploadBlob(req.file, req.body.localAccountId)
-    //onsole.log(up.status);
-    res.send(up)
+    try {
+      const up = uploadBlob(req.file, req.body.localAccountId);
+      res.send(up)
+    } catch (err) {
+      res.status(400).send("Something went wrong!");
+    }
   })
 
   /*   getTenantId(req, res, (err) => {

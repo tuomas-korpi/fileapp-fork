@@ -1,5 +1,7 @@
 const { DefaultAzureCredential } = require("@azure/identity");
 const { BlobServiceClient, StorageSharedKeyCredential } = require("@azure/storage-blob");
+const { dbTest, dbInsertTest } = require('./dbQuery.js')
+
 require('dotenv').config()
 const account = process.env.STOR_ACCOUNT;
 const accountKey = process.env.SHARED_KEY;
@@ -57,19 +59,19 @@ const uploadBlob = async function (blobFile, loacalAccountId) {
     const containerName = "class1";
     const containerClient = blobServiceClient.getContainerClient(containerName);
     const blobName = blobFile.originalname
-    console.log(blobFile.originalname);
+    // console.log(blobFile.originalname);
     const content = blobFile.buffer
     const blockBlobClient = containerClient.getBlockBlobClient(blobName);
     const uploadBlobResponse = await blockBlobClient.upload(content, content.length);
     //url construction https://storcafla426wsqmw.blob.core.windows.net/class1/azuresql.png
     const blobUrl = `https://storcafla426wsqmw.blob.core.windows.net/${containerName}/${blobName}`
-    console.log(blobUrl);
-    console.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse);
+    // console.log(blobUrl);
+    console.log(`Upload block blob ${blobName} successfully`);
     //const msg = `Upload block blob ${blobName} successfully`;
 
     // write into database
     dbInsertTest(blobName, loacalAccountId, blobUrl).then(() => {
-      res.send("Successfully upload file!");
+      console.log("Successfully upload file!");
     }).catch(err => {
       console.error(err);
       throw err;
@@ -77,7 +79,7 @@ const uploadBlob = async function (blobFile, loacalAccountId) {
 
     return uploadBlobResponse
   } catch (err) {
-    console.log("Error uplosd");
+    throw err;
   }
 
 }
