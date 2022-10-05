@@ -23,19 +23,14 @@ sql.on('error', err => {
 })
 
 async function dbTest () {
-  console.log(123);
-  const value = 123;
   let pool = await sql.connect(sqlConfig);
   try {
-    let result1 = await pool.request()
-      // .input('input_parameter', sql.Int, value)
+    let result = await pool.request()
       .query('select * from Files');
-
-    // console.log(typeof result1);
-    return result1.recordset;
+    return result.recordset;
   } catch (err) {
     // ... error checks
-    console.error(err);
+    throw err;
   } finally {
     pool.close();
   }
