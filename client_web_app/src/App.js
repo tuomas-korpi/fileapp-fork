@@ -6,9 +6,11 @@ import axios from 'axios';
 import Upload from "./components/Upload"
 import blobs from "./components/blobs"
 import { PageLayout } from "./components/PageLayout";
-import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal  } from "@azure/msal-react";
+import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from "@azure/msal-react";
 import { loginRequest } from "./authConfig";
 import Button from "react-bootstrap/Button";
+
+
 
 //change proxy too
 const baseUrl = "http://localhost:3001"
@@ -22,42 +24,42 @@ function ProfileContent() {
   const name = accounts[0] && accounts[0].name;
 
   function RequestAccessToken() {
-      const request = {
-          ...loginRequest,
-          account: accounts[0]
-      };
+    const request = {
+      ...loginRequest,
+      account: accounts[0]
+    };
 
-      // Silently acquires an access token which is then attached to a request for Microsoft Graph data
-      instance.acquireTokenSilent(request).then((response) => {
-          setAccessToken(response.accessToken);
-        
-      }).catch((e) => {
-          instance.acquireTokenPopup(request).then((response) => {
-              setAccessToken(response.accessToken);
-          });
+    // Silently acquires an access token which is then attached to a request for Microsoft Graph data
+    instance.acquireTokenSilent(request).then((response) => {
+      setAccessToken(response.accessToken);
+
+    }).catch((e) => {
+      instance.acquireTokenPopup(request).then((response) => {
+        setAccessToken(response.accessToken);
       });
+    });
 
   }
 
-  if(accessToken == null){
-      RequestAccessToken()
+  if (accessToken == null) {
+    RequestAccessToken()
   }
-  else{
-    console.log("Access token: ", accessToken);
-    console.log("Accounts: ", accounts);
-  }
+
+  //console.log("Access token: ", accessToken);
+  console.log("Accounts: ", accounts);
+
 
 
   return (
-      <>
-          <h5 className="card-title">Welcome {name}</h5>
-          {accessToken ? 
-              <p>Access Token Acquired!</p>
-              :        
-              <p>No Access token</p>      
-          }
-           <Upload accessToken={accessToken}/>
-      </>
+    <>
+      <h5 className="card-title">Welcome {name}</h5>
+      {accessToken ?
+        <p>Access Token Acquired!</p>
+        :
+        <p>No Access token</p>
+      }
+      <Upload accessToken={accessToken} />
+    </>
   );
 };
 
@@ -68,14 +70,14 @@ function App() {
   const [blob, setBlob] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  
+
 
 
   //GET
-/*   useEffect(() => {
-    console.log('effect')
-    getBlob()
-  }, []) */
+  /*   useEffect(() => {
+      console.log('effect')
+      getBlob()
+    }, []) */
 
   const getBlob = () => {
     setLoading(true);
@@ -101,10 +103,10 @@ function App() {
   return (
     <PageLayout>
       <AuthenticatedTemplate>
-      <ProfileContent />
+        <ProfileContent />
         <div className="App">
           <h1>My Files</h1>
-{/*           {loading ? (
+          {/*           {loading ? (
             <div>...Data Loading.....</div>
           ) : (
             <table>
@@ -139,9 +141,9 @@ function App() {
 
 
           <hr />
-          
-         
-          
+
+
+
         </div>
       </AuthenticatedTemplate>
       <UnauthenticatedTemplate>

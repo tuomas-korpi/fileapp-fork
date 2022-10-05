@@ -7,7 +7,7 @@ const baseUrl = "http://localhost:3001"
 export default function Upload({accessToken}) {
     const [file, setFile] = useState()
     let token = accessToken
-    console.log("ACCESTOKEN IN UPLOAD:", token);
+    //console.log("ACCESTOKEN IN UPLOAD:", token);
     function handleChange(event) {
         setFile(event.target.files[0])
     }
