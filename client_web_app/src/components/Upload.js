@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const baseUrl = "http://localhost:3001"
 
-export default function Upload({tenantId}) {
+export default function Upload({localAccountId}) {
     const [file, setFile] = useState()
     function handleChange(event) {
         setFile(event.target.files[0])
@@ -12,12 +12,12 @@ export default function Upload({tenantId}) {
 
     async function handleSubmit(event) {
         console.log(typeof file);
-        console.log("TENANT ID IN UPLOAD:", tenantId);
+        console.log("localAccountId IN UPLOAD:", localAccountId);
         event.preventDefault()
         const url = `${baseUrl}/upload`;
         console.log(file);
         let formData = new FormData()
-        formData.append('tenantId', tenantId)
+        formData.append('localAccountId', localAccountId)
         formData.append('file', file)
         
         console.log(formData);

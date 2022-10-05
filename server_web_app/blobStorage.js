@@ -29,9 +29,6 @@ const getContainerList = async function () {
 const getBlobList = async function (containerName) {
 
 
-
-
-
     console.log("\nListing blobs...");
     const containerClient = blobServiceClient.getContainerClient(containerName);
     //blob properties
@@ -54,19 +51,26 @@ const getBlobList = async function (containerName) {
 
 
 
-const uploadBlob = async function(blobFile) {
+const uploadBlob = async function(blobFile, loacalAccountId) {
 
+  try{
   const containerName = "class1";
   const containerClient = blobServiceClient.getContainerClient(containerName);
   const blobName = blobFile.originalname
-  console.log(blobName);
+  console.log(blobFile.originalname);
   const content = blobFile.buffer
-  console.log(typeof content);
   const blockBlobClient = containerClient.getBlockBlobClient(blobName);
   const uploadBlobResponse = await blockBlobClient.upload(content, content.length);
-  console.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);
-  const msg = `Upload block blob ${blobName} successfully`;
-  return msg
+  //url construction https://storcafla426wsqmw.blob.core.windows.net/class1/azuresql.png
+    const blobUrl = `https://storcafla426wsqmw.blob.core.windows.net/${containerName}/${blobName}`
+    console.log(blobUrl);
+  console.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse);
+  //const msg = `Upload block blob ${blobName} successfully`;
+  return uploadBlobResponse
+  }catch(err){
+    console.log("Error uplosd");
+  }
+
 }
 
 
