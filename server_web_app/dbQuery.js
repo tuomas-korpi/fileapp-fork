@@ -41,16 +41,17 @@ async function dbTest () {
   }
 }
 
-async function dbInsertTest() {
+async function dbInsertTest(fileName, ownerId, blobUrl) {
   let pool = await sql.connect(sqlConfig);
   try {
     const request = await pool.request()
-    .input('FileName', sql.NVarChar, 'testFile11')
-    .input('OwnerId', sql.NVarChar, 'testUser11')
-    .input('BlobUrl', sql.NVarChar, 'testUrl11')
+    .input('FileName', sql.NVarChar, fileName)
+    .input('OwnerId', sql.NVarChar, ownerId)
+    .input('BlobUrl', sql.NVarChar, blobUrl)
     .query('insert into Files (FileName, OwnerId, BlobUrl) values (@FileName, @OwnerId, @BlobUrl)');
     console.log(request);
   } catch (err) {
+    // ... error checks
     throw err;
   } finally {
     pool.close();

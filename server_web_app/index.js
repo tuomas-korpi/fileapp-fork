@@ -56,7 +56,11 @@ app.get("/dbTest", async (req, res) => {
 })
 
 app.post("/dbInsertTest", async (req, res) => {
-  dbInsertTest().then(() => {
+  const fileName = req.body.fileName;
+  const ownerId = req.body.ownerId;
+  const blobURL = req.body.blobURL;
+
+  dbInsertTest(fileName, ownerId, blobURL).then(() => {
     res.send("good");
   }).catch(err => {
     console.error(err);
