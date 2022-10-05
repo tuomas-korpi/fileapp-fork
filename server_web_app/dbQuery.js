@@ -19,7 +19,7 @@ const sqlConfig = {
 
 sql.on('error', err => {
   // ... error handler
-  console.error(err);
+  throw err;
 })
 
 async function dbTest () {
