@@ -18,7 +18,7 @@ const getContainerList = async function () {
     //get blobs in this cont
     let blob = await getBlobList(container.name)
 
-    cont.push({contName: container.name, blob: blob})
+    cont.push({ contName: container.name, blob: blob })
     //console.log(`Container ${i++}: ${container.name}`);
   }
   console.log("CONTAINER ARRAY: ", cont);
@@ -38,9 +38,9 @@ const getBlobList = async function (containerName) {
     // Get Blob Client from name, to get the URL
     const tempBlockBlobClient = containerClient.getBlockBlobClient(blob.name);
     //put to obj
-        let blobObj = {name:"",url:""}
+    let blobObj = { name: "", url: "" }
     blobObj.name = blob.name
-        blobObj.url= tempBlockBlobClient.url
+    blobObj.url = tempBlockBlobClient.url
     blobArr.push(blobObj)
     // Display blob name and URL
     //console.log(`\n\tname: ${blob.name}\n\tURL: ${tempBlockBlobClient.url}\n`);
@@ -51,9 +51,9 @@ const getBlobList = async function (containerName) {
 
 
 
-const uploadBlob = async function(blobFile, loacalAccountId) {
+const uploadBlob = async function (blobFile, loacalAccountId) {
 
-  try{
+  try {
     const containerName = "class1";
     const containerClient = blobServiceClient.getContainerClient(containerName);
     const blobName = blobFile.originalname
@@ -76,7 +76,7 @@ const uploadBlob = async function(blobFile, loacalAccountId) {
     });
 
     return uploadBlobResponse
-  }catch(err){
+  } catch (err) {
     console.log("Error uplosd");
   }
 
@@ -86,4 +86,4 @@ const uploadBlob = async function(blobFile, loacalAccountId) {
 
 
 
-module.exports = {getContainerList, uploadBlob}
+module.exports = { getContainerList, uploadBlob }
