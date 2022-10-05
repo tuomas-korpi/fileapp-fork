@@ -6,8 +6,6 @@ const multipart = require("parse-multipart");
 const { getContainerList, uploadBlob } = require('./blobStorage.js')
 
 
-
-
 const express = require("express");
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -48,28 +46,27 @@ app.get("/getFilesByOwnerId/:ownerId", async (req, res) => {
   res.send(files);
 })
 
-
-app.get("/getAll", async (req, res) => {
+app.get("/getAll", async(req, res) => {
   const blobs = await getContainerList()
   res.send(blobs);
 });
 
-//Multer parses fornData
+//Multer parses form data
 let multer = require('multer');
 let upload = multer().single("file");
 app.post('/upload', (req, res) => {
   upload(req, res, (err) => {
-    if (err) {
+    if(err) {
       res.status(400).send("Something went wrong!");
     }
     console.log(req.file);
-
-    uploadBlob(req.file)
-
+    
+    const up = uploadBlob(req.file)
+    res.send(up)
+    
   });
 
 });
-
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
