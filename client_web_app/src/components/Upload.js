@@ -4,21 +4,22 @@ import axios from 'axios';
 
 const baseUrl = "http://localhost:3001"
 
-export default function Upload({accessToken}) {
+export default function Upload({localAccountId}) {
     const [file, setFile] = useState()
-    let token = accessToken
-    //console.log("ACCESTOKEN IN UPLOAD:", token);
     function handleChange(event) {
         setFile(event.target.files[0])
     }
 
     async function handleSubmit(event) {
         console.log(typeof file);
+        console.log("localAccountId IN UPLOAD:", localAccountId);
         event.preventDefault()
         const url = `${baseUrl}/upload`;
         console.log(file);
         let formData = new FormData()
+        formData.append('localAccountId', localAccountId)
         formData.append('file', file)
+        
         console.log(formData);
         await axios({
             method: 'post',

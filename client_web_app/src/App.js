@@ -20,8 +20,17 @@ const baseUrl = "http://localhost:3001"
 function ProfileContent() {
   const { instance, accounts, inProgress } = useMsal();
   const [accessToken, setAccessToken] = useState(null);
+  const [localAccountId, setLocalAccountId] = useState(null);
 
   const name = accounts[0] && accounts[0].name;
+
+  useEffect(() => {
+    RequestAccessToken()
+      
+    
+  }, [])
+
+
 
   function RequestAccessToken() {
     const request = {
@@ -32,22 +41,25 @@ function ProfileContent() {
     // Silently acquires an access token which is then attached to a request for Microsoft Graph data
     instance.acquireTokenSilent(request).then((response) => {
       setAccessToken(response.accessToken);
+      setLocalAccountId(accounts[0].localAccountId)
 
     }).catch((e) => {
       instance.acquireTokenPopup(request).then((response) => {
         setAccessToken(response.accessToken);
+        setLocalAccountId(accounts[0].localAccountId)
       });
     });
 
+  
+    
+
   }
 
-  if (accessToken == null) {
-    RequestAccessToken()
-  }
+  
 
   //console.log("Access token: ", accessToken);
   console.log("Accounts: ", accounts);
-
+  console.log("TENANTS ID: ", localAccountId);
 
 
   return (
@@ -58,7 +70,7 @@ function ProfileContent() {
         :
         <p>No Access token</p>
       }
-      <Upload accessToken={accessToken} />
+      <Upload localAccountId={localAccountId} />
     </>
   );
 };

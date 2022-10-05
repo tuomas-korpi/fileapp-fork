@@ -1,3 +1,4 @@
+
 // server/index.js
 
 const cors = require('cors');
@@ -76,20 +77,30 @@ app.get("/getAll", async(req, res) => {
 //Multer parses form data
 let multer = require('multer');
 let upload = multer().single("file");
+//let getTenantId = multer().single("tenantId");
 app.post('/upload', (req, res) => {
   upload(req, res, (err) => {
-    if(err) {
+    if (err) {
       res.status(400).send("Something went wrong!");
     }
     console.log(req.file);
+    console.log("localAccountId: "+req.body.localAccountId)
     
-    const up = uploadBlob(req.file)
+    const up = uploadBlob(req.file, req.body.localAccountId)
+    //onsole.log(up.status);
     res.send(up)
-    
-  });
+  })
+
+/*   getTenantId(req, res, (err) => {
+    if (err) {
+      res.status(400).send("Something went wrong!");
+    }
+    console.log("TENANT ID: "+req.tenantId);
+  }) */
 
 });
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
+
