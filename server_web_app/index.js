@@ -4,6 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const multipart = require("parse-multipart");
 const { getContainerList, uploadBlob } = require('./blobStorage.js')
+const { dbTest } = require('./dbQuery.js')
 
 
 const express = require("express");
@@ -44,6 +45,14 @@ app.get("/getFilesByOwnerId/:ownerId", async (req, res) => {
   });
 
   res.send(files);
+})
+
+app.get("/dbTest", async (req, res) => {
+  dbTest().then(results => {
+    res.send(results);
+  }).catch(err => {
+    console.error(err);
+  })
 })
 
 app.get("/getAll", async(req, res) => {
