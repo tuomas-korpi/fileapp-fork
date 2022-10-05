@@ -2,7 +2,7 @@ const { DefaultAzureCredential } = require("@azure/identity");
 const { BlobServiceClient, StorageSharedKeyCredential } = require("@azure/storage-blob");
 require('dotenv').config() 
 const account = process.env.STOR_ACCOUNT;
-const accountKey = process.env.SHARED_KEY;
+const accountKey = process.env.STOR_KEY;
 const sharedKeyCredential = new StorageSharedKeyCredential(account, accountKey);
 
 const blobServiceClient = new BlobServiceClient(
@@ -27,11 +27,6 @@ const getContainerList = async function () {
 }
 
 const getBlobList = async function (containerName) {
-
-
-
-
-
     console.log("\nListing blobs...");
     const containerClient = blobServiceClient.getContainerClient(containerName);
     //blob properties
@@ -65,12 +60,6 @@ const uploadBlob = async function(blobFile) {
   const blockBlobClient = containerClient.getBlockBlobClient(blobName);
   const uploadBlobResponse = await blockBlobClient.upload(content, content.length);
   console.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse.requestId);
-  const msg = `Upload block blob ${blobName} successfully`;
-  return msg
 }
-
-
-
-
 
 module.exports = {getContainerList, uploadBlob}
