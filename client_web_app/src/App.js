@@ -3,90 +3,153 @@ import React from "react";
 import "./App.css";
 import { useState, useEffect } from "react";
 import axios from 'axios';
-import { useForm } from "react-hook-form";
+import Upload from "./components/Upload"
+import blobs from "./components/blobs"
+import { PageLayout } from "./components/PageLayout";
+import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from "@azure/msal-react";
+import { loginRequest } from "./authConfig";
+import Button from "react-bootstrap/Button";
 
-//
-//const baseUrl = "https://api123tuomas.azurewebsites.net"
-const baseUrl = "https://api123tuomas.azurewebsites.net"
 
+
+//change proxy too
+const baseUrl = "http://localhost:3001"
+//const baseUrl = "https://api321tuomas.azurewebsites.net"
+
+
+function ProfileContent() {
+  const { instance, accounts, inProgress } = useMsal();
+  const [accessToken, setAccessToken] = useState(null);
+
+  const name = accounts[0] && accounts[0].name;
+
+  function RequestAccessToken() {
+    const request = {
+      ...loginRequest,
+      account: accounts[0]
+    };
+
+    // Silently acquires an access token which is then attached to a request for Microsoft Graph data
+    instance.acquireTokenSilent(request).then((response) => {
+      setAccessToken(response.accessToken);
+
+    }).catch((e) => {
+      instance.acquireTokenPopup(request).then((response) => {
+        setAccessToken(response.accessToken);
+      });
+    });
+
+  }
+
+  if (accessToken == null) {
+    RequestAccessToken()
+  }
+
+  //console.log("Access token: ", accessToken);
+  console.log("Accounts: ", accounts);
+
+
+
+  return (
+    <>
+      <h5 className="card-title">Welcome {name}</h5>
+      {accessToken ?
+        <p>Access Token Acquired!</p>
+        :
+        <p>No Access token</p>
+      }
+      <Upload accessToken={accessToken} />
+    </>
+  );
+};
 
 
 
 function App() {
   const [container, setContainers] = useState([]);
-  const [file, setFile] = useState()
-
-
-/*   useEffect(() => {
-    fetch("/api")
-      .then((res) => res.json())
-      .then((data) => setContainers(data.containers));
-  }, []); */
+  const [blob, setBlob] = useState([]);
+  const [loading, setLoading] = useState(false);
 
 
 
-  function getContainers() {
-    axios.get("/getAll")
-    .then((res) => {
-      setContainers(res.data)
-      console.log(res.data);
+
+  //GET
+  /*   useEffect(() => {
+      console.log('effect')
+      getBlob()
+    }, []) */
+
+  const getBlob = () => {
+    setLoading(true);
+    blobs.getAll().then(initialBlobs => {
+      console.log(initialBlobs);
+      setBlob(initialBlobs)
+      console.log(blob);
+      setLoading(false);
     })
   }
- 
-  const mapBlobs = container.map(cont => 
-    <div key={Math.floor(Math.random() * 99999)}>
-      <h1>{cont.contName}</h1>
-        <ul>
-          {cont.blob.map(blob=>
-            <li key={ Math.floor(Math.random() * 99999)}>
-              Blob name: {blob.name} <br/>
-              Blob url: {blob.url}
-            </li>
-          )}
-        </ul>
-    </div>)
 
 
-function handleChange(event) {
-  setFile(event.target.files[0])
-} 
 
- async function handleSubmit(event) {
-  console.log(typeof file);
-  event.preventDefault()
-  const url = `${baseUrl}/upload`;
-  console.log(file);
-  let formData = new FormData()
-  formData.append('file', file)
-  console.log(formData);
-  await axios({
-      method: 'post',
-      url: url,
-      data: formData,
-      headers: {
-          "Content-Type": "multipart/form-data",
-      }
-  });
-
-}
-
+  //DELETE storage based on url - event syncs the sql
+  const handleDelete = (event, id) => {
+    blobs.remove(id).then(returnedBlob => {
+      console.log(returnedBlob);
+      setBlob(blob.filter(p => p.id !== id))
+    })
+  }
 
 
   return (
-    <div className="App">
-      <button onClick={getContainers}>
-        Get All blobs
-      </button>
-      {mapBlobs}
-      <hr/>
-      <form onSubmit={handleSubmit}>
-          <h1>React File Upload</h1>
-          <input encType="multipart/form-data" name="file" type="file" onChange={handleChange}/>
-          <button type="submit">Upload</button>
-        </form>
+    <PageLayout>
+      <AuthenticatedTemplate>
+        <ProfileContent />
+        <div className="App">
+          <h1>My Files</h1>
+          {/*           {loading ? (
+            <div>...Data Loading.....</div>
+          ) : (
+            <table>
+              <tbody>
+                <tr>
+                  <th>File name</th>
+                  <th>File url</th>
+                  <th>last modified</th>
+                  <th>delete</th>
+                </tr>
+                {blob.map(x =>
+                  <tr key={Math.random() * 9999}>
+                    <td key={Math.random() * 9999}>
+                      {x.file_name}
+                    </td>
+                    <td key={Math.random() * 9999}>
+                      {x.url}
+                    </td>
+                    <td key={Math.random() * 9999}>
+                      {x.lastmodified}
+                    </td>
+                    <td key={Math.random() * 9999}>
+                      <button onClick={event => handleDelete(event, x.id)}>
+                        delete
+                      </button>
+                    </td>
+                  </tr>
+                )
+                }
+              </tbody>
+            </table>)} */}
 
 
-    </div>
+          <hr />
+
+
+
+        </div>
+      </AuthenticatedTemplate>
+      <UnauthenticatedTemplate>
+        <p>You are not signed in! Please sign in.</p>
+      </UnauthenticatedTemplate>
+    </PageLayout>
   );
 }
 export default App;
