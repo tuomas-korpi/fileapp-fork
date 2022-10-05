@@ -4,7 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const multipart = require("parse-multipart");
 const { getContainerList, uploadBlob } = require('./blobStorage.js')
-const { dbTest } = require('./dbQuery.js')
+const { dbTest, dbInsertTest } = require('./dbQuery.js')
 
 
 const express = require("express");
@@ -53,6 +53,15 @@ app.get("/dbTest", async (req, res) => {
   }).catch(err => {
     console.error(err);
   })
+})
+
+app.post("/dbInsertTest", async (req, res) => {
+  dbInsertTest().then(() => {
+    res.send("good");
+  }).catch(err => {
+    console.error(err);
+    res.send("bad");
+  });
 })
 
 app.get("/getAll", async(req, res) => {

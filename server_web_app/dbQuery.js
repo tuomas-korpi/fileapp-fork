@@ -27,18 +27,34 @@ async function dbTest () {
   const value = 123;
   let pool = await sql.connect(sqlConfig);
   try {
-      let result1 = await pool.request()
-          // .input('input_parameter', sql.Int, value)
-          .query('select * from Files');
-          
-      // console.log(typeof result1);
-      return result1.recordset;
+    let result1 = await pool.request()
+      // .input('input_parameter', sql.Int, value)
+      .query('select * from Files');
+
+    // console.log(typeof result1);
+    return result1.recordset;
   } catch (err) {
-      // ... error checks
-      console.error(err);
+    // ... error checks
+    console.error(err);
   } finally {
     pool.close();
   }
 }
 
-module.exports = { dbTest };
+async function dbInsertTest() {
+  let pool = await sql.connect(sqlConfig);
+  try {
+    const request = await pool.request()
+    .input('FileName', sql.NVarChar, 'testFile11')
+    .input('OwnerId', sql.NVarChar, 'testUser11')
+    .input('BlobUrl', sql.NVarChar, 'testUrl11')
+    .query('insert into Files (FileName, OwnerId, BlobUrl) values (@FileName, @OwnerId, @BlobUrl)');
+    console.log(request);
+  } catch (err) {
+    throw err;
+  } finally {
+    pool.close();
+  }
+}
+
+module.exports = { dbTest, dbInsertTest};
