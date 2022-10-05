@@ -69,7 +69,7 @@ app.post("/dbInsertTest", async (req, res) => {
   });
 })
 
-app.get("/getAll", async(req, res) => {
+app.get("/getAll", async (req, res) => {
   const blobs = await getContainerList()
   res.send(blobs);
 });
@@ -84,19 +84,19 @@ app.post('/upload', (req, res) => {
       res.status(400).send("Something went wrong!");
     }
     console.log(req.file);
-    console.log("localAccountId: "+req.body.localAccountId)
-    
+    console.log("localAccountId: " + req.body.localAccountId)
+
     const up = uploadBlob(req.file, req.body.localAccountId)
     //onsole.log(up.status);
     res.send(up)
   })
 
-/*   getTenantId(req, res, (err) => {
-    if (err) {
-      res.status(400).send("Something went wrong!");
-    }
-    console.log("TENANT ID: "+req.tenantId);
-  }) */
+  /*   getTenantId(req, res, (err) => {
+      if (err) {
+        res.status(400).send("Something went wrong!");
+      }
+      console.log("TENANT ID: "+req.tenantId);
+    }) */
 
 });
 
