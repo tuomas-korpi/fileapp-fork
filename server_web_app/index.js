@@ -21,27 +21,27 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.get("/getFilesByUserName/dummy/:userId", async (req, res) => {
+app.get("/getFilesByOwnerId/:ownerId", async (req, res) => {
   const files = [];
 
-  const userId = req.params.userId
-  console.log(userId);
+  const ownerId = req.params.ownerId
+  console.log(ownerId);
 
   files.push({
     "FileName": "testFile1",
-    "UserId": "testUser1",
+    "ownerId": "testUser1",
     "BlobURL": "https://file1.url"
   });
 
   files.push({
     "FileName": "testFile2",
-    "UserId": "testUser2",
+    "ownerId": "testUser2",
     "BlobURL": "https://file2.url"
   });
 
   files.push({
     "FileName": "testFile3",
-    "UserId": "testUser3",
+    "ownerId": "testUser3",
     "BlobURL": "https://file3.url"
   });
 
