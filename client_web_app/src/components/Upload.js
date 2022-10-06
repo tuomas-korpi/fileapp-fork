@@ -45,7 +45,7 @@ export default function Upload({ localAccountId }) {
         let formData = new FormData()
         formData.append('localAccountId', localAccountId)
         formData.append('file', file)
-        formData.append('selectedContainer', selectedContainer)
+        formData.append('containerName', selectedContainer)
         console.log(formData);
         await axios({
             method: 'post',
