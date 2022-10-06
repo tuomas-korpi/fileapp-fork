@@ -26,8 +26,7 @@ function ProfileContent() {
 
   useEffect(() => {
     RequestAccessToken()
-      
-    
+
   }, [])
 
 
@@ -50,16 +49,11 @@ function ProfileContent() {
       });
     });
 
-  
-    
-
   }
-
-  
 
   //console.log("Access token: ", accessToken);
   console.log("Accounts: ", accounts);
-  console.log("TENANTS ID: ", localAccountId);
+  console.log("TLocal account ID: ", localAccountId);
 
 
   return (
@@ -77,21 +71,27 @@ function ProfileContent() {
 
 
 
+
+
+
 function App() {
   const [container, setContainers] = useState([]);
   const [blob, setBlob] = useState([]);
   const [loading, setLoading] = useState(false);
 
 
-
-
   //GET
-  /*   useEffect(() => {
-      console.log('effect')
-      getBlob()
-    }, []) */
+  useEffect(() => {
+    console.log('effect')
+    //getSQL
+    /*       axios.get('http://localhost:3001/dbTest').then(resp => {
+    
+        console.log(resp.data);
+    }); */
+    getBlob()
+  }, [])
 
-  const getBlob = () => {
+  const getBlob = async () => {
     setLoading(true);
     blobs.getAll().then(initialBlobs => {
       console.log(initialBlobs);
@@ -118,27 +118,27 @@ function App() {
         <ProfileContent />
         <div className="App">
           <h1>My Files</h1>
-          {/*           {loading ? (
+                     {loading ? (
             <div>...Data Loading.....</div>
           ) : (
             <table>
               <tbody>
                 <tr>
                   <th>File name</th>
-                  <th>File url</th>
-                  <th>last modified</th>
+                  <th>Owner Id</th>
+                  <th>Blob url</th>
                   <th>delete</th>
                 </tr>
                 {blob.map(x =>
                   <tr key={Math.random() * 9999}>
                     <td key={Math.random() * 9999}>
-                      {x.file_name}
+                      {x.FileName}
                     </td>
                     <td key={Math.random() * 9999}>
-                      {x.url}
+                      {x.OwnerId}
                     </td>
                     <td key={Math.random() * 9999}>
-                      {x.lastmodified}
+                      {x.BlobURL}
                     </td>
                     <td key={Math.random() * 9999}>
                       <button onClick={event => handleDelete(event, x.id)}>
@@ -149,7 +149,7 @@ function App() {
                 )
                 }
               </tbody>
-            </table>)} */}
+            </table>)} 
 
 
           <hr />

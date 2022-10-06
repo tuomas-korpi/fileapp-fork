@@ -87,28 +87,23 @@ app.get("/getAll", async (req, res) => {
 //Multer parses form data
 let multer = require('multer');
 let upload = multer().single("file");
-//let getTenantId = multer().single("tenantId");
 app.post('/upload', (req, res) => {
   upload(req, res, (err) => {
     if (err) {
       res.status(400).send("Something went wrong!");
     }
 
-    try {
-      const up = uploadBlob(req.file, req.body.localAccountId);
-      res.send(up);
-    } catch (err) {
-      res.status(400).send("Something went wrong!");
-    }
-  });
+    console.log("fileName: " + req.file);
+    console.log("localAccountId: " + req.body.localAccountId);
 
-  /*   getTenantId(req, res, (err) => {
-      if (err) {
-        res.status(400).send("Something went wrong!");
-      }
-      console.log("TENANT ID: "+req.tenantId);
-    }) */
-
+    uploadBlob(req.file, req.body.localAccountId).then(result => {
+      console.log(result);
+      res.send(result)
+    }).catch(err => {
+      console.error(err);
+      res.send("Something went wrong!");
+    })
+  })
 });
 
 app.listen(PORT, () => {

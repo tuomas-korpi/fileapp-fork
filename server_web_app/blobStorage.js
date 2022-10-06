@@ -63,17 +63,17 @@ const uploadBlob = async function (blobFile, loacalAccountId) {
     const blockBlobClient = containerClient.getBlockBlobClient(blobName);
     const uploadBlobResponse = await blockBlobClient.upload(content, content.length);
 
-    console.log(`Upload block blob ${blobName} successfully`);
+    const msg = `Upload block blob ${blobName} successfully`;
 
     // write into database
     dbUpload(blobName, loacalAccountId, blockBlobClient.url).then(() => {
-      console.log("Successfully upload file!");
+      ;
     }).catch(err => {
       console.error(err);
       throw err;
     });
 
-    return uploadBlobResponse
+    return msg;
   } catch (err) {
     throw err;
   }

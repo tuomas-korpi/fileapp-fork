@@ -28,7 +28,11 @@ export default function Upload({localAccountId}) {
             headers: {
                 "Content-Type": "multipart/form-data",
             }
-        }).then((res)=>{alert("Upload status: "+ res.status);})
+        }).then(results => {
+            alert(JSON.stringify(results.data));
+          }).catch(err => {
+            alert("Upload Error");
+          })
         
 
 
