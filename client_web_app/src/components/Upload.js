@@ -2,6 +2,7 @@ import React from "react"
 import { useState, useEffect } from "react";
 import axios from 'axios';
 
+
 const baseUrl = "http://localhost:3001"
 
 export default function Upload({localAccountId}) {
@@ -38,6 +39,7 @@ export default function Upload({localAccountId}) {
 
     }
         return (
+            <>
             <div style={{paddingBottom:100}}>
                 <form onSubmit={handleSubmit}>
                     <h1>React File Upload</h1>
@@ -45,6 +47,8 @@ export default function Upload({localAccountId}) {
                     <button type="submit">Upload</button>
                 </form>
             </div>
+            
+            </>
         )
     
 }
