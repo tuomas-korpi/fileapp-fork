@@ -1,6 +1,6 @@
 const { DefaultAzureCredential } = require("@azure/identity");
 const { BlobServiceClient, StorageSharedKeyCredential } = require("@azure/storage-blob");
-const { dbTest, dbUploadInsert } = require('./dbQuery.js')
+const { dbTest, dbUpload } = require('./dbQuery.js')
 
 require('dotenv').config()
 const account = process.env.STOR_ACCOUNT;
@@ -66,7 +66,7 @@ const uploadBlob = async function (blobFile, loacalAccountId) {
     console.log(`Upload block blob ${blobName} successfully`);
 
     // write into database
-    dbUploadInsert(blobName, loacalAccountId, blockBlobClient.url).then(() => {
+    dbUpload(blobName, loacalAccountId, blockBlobClient.url).then(() => {
       console.log("Successfully upload file!");
     }).catch(err => {
       console.error(err);

@@ -36,7 +36,7 @@ async function dbTest () {
   }
 }
 
-async function dbUploadInsert(fileName, ownerId, blobUrl) {
+async function dbUpload(fileName, ownerId, blobUrl) {
   let pool = await sql.connect(sqlConfig);
   try {
     const request = await pool.request()
@@ -53,4 +53,5 @@ async function dbUploadInsert(fileName, ownerId, blobUrl) {
   }
 }
 
-module.exports = { dbTest, dbUploadInsert};
+
+module.exports = { dbTest, dbUpload};
