@@ -12,6 +12,17 @@ rg_name=rg-team-1-aug-dev-we
 az deployment group create --template-file main.bicep --resource-group $rg_name --parameters main.parameters.json --mode Complete
 ```
 
+# server web app
+## .env
+```
+STOR_ACCOUNT="CHANGEME"
+SHARED_KEY="CHANGEME"
+SQL_USERNAME="CHANGEME"
+SQL_PASSWORD="CHANGEME"
+SQL_SERVER="CHANGEME"
+SQL_DATABASE="CHANGEME"
+```
+
 
 # branches
 
