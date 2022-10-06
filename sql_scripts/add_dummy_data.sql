@@ -1,6 +1,6 @@
 INSERT INTO [dbo].[Files] 
-VALUES ('testFileName1', 'testUserId1', 'testURL1');
+VALUES ('testContainer1', 'testFileName1', 'testUserId1', 'testURL1');
 INSERT INTO [dbo].[Files] 
-VALUES ('testFileName2', 'testUserId2', 'testURL2');
+VALUES ('testContainer2', 'testFileName2', 'testUserId2', 'testURL2');
 INSERT INTO [dbo].[Files] 
-VALUES ('testFileName3', 'testUserId3', 'testURL3');
+VALUES ('testContainer3', 'testFileName3', 'testUserId3', 'testURL3');

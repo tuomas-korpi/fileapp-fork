@@ -36,15 +36,16 @@ async function dbTest () {
   }
 }
 
-async function dbInsertTest(fileName, ownerId, blobUrl) {
+async function dbUpload(containerName, fileName, ownerId, blobUrl) {
   let pool = await sql.connect(sqlConfig);
   try {
     const request = await pool.request()
+    .input('ContainerName', sql.NVarChar, containerName)
     .input('FileName', sql.NVarChar, fileName)
     .input('OwnerId', sql.NVarChar, ownerId)
     .input('BlobUrl', sql.NVarChar, blobUrl)
-    .query('insert into Files (FileName, OwnerId, BlobUrl) values (@FileName, @OwnerId, @BlobUrl)');
-    console.log(request);
+    .query('INSERT INTO Files (ContainerName, FileName, OwnerId, BlobUrl) VALUES (@ContainerName, @FileName, @OwnerId, @BlobUrl);');
+    // console.log(request);
   } catch (err) {
     // ... error checks
     throw err;
@@ -53,4 +54,19 @@ async function dbInsertTest(fileName, ownerId, blobUrl) {
   }
 }
 
-module.exports = { dbTest, dbInsertTest};
+async function dbDelete(containerName, fileName) {
+  let pool = await sql.connect(sqlConfig);
+  try {
+    const request = await pool.request()
+    .input('ContainerName', sql.NVarChar, containerName)
+    .input('FileName', sql.NVarChar, fileName)
+    .query('DELETE FROM Files WHERE FileName = @FileName AND ContainerName = @ContainerName;');
+  } catch (err) {
+    // ... error checks
+    throw err;
+  } finally {
+    pool.close();
+  }
+}
+
+module.exports = { dbTest, dbUpload, dbDelete};

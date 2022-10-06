@@ -1,11 +1,10 @@
-
 // server/index.js
 
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const multipart = require("parse-multipart");
-const { getContainerList, uploadBlob } = require('./blobStorage.js')
-const { dbTest, dbInsertTest } = require('./dbQuery.js')
+const { getContainerList, uploadBlob, deleteBlob } = require('./blobStorage.js');
+const { dbTest, dbUpload } = require('./dbQuery.js');
 
 
 const express = require("express");
@@ -28,25 +27,28 @@ app.get("/getFilesByOwnerId/:ownerId", async (req, res) => {
   console.log(ownerId);
 
   files.push({
+    "containerName": "testContainer1",
     "fileName": "testFile1",
     "ownerId": "testUser1",
     "blobURL": "https://file1.url"
   });
 
   files.push({
+    "containerName": "testContainer2",
     "fileName": "testFile2",
     "ownerId": "testUser2",
     "blobURL": "https://file2.url"
   });
 
   files.push({
+    "containerName": "testContainer3",
     "fileName": "testFile3",
     "ownerId": "testUser3",
     "blobURL": "https://file3.url"
   });
 
   res.send(files);
-})
+});
 
 app.get("/dbTest", async (req, res) => {
   dbTest().then(results => {
@@ -54,22 +56,36 @@ app.get("/dbTest", async (req, res) => {
   }).catch(err => {
     console.error(err);
   })
-})
+});
 
-app.post("/dbInsertTest", async (req, res) => {
+app.post("/dbUpload", async (req, res) => {
+  const containerName = req.body.containerName;
   const fileName = req.body.fileName;
   const ownerId = req.body.ownerId;
   const blobURL = req.body.blobURL;
 
-  dbInsertTest(fileName, ownerId, blobURL).then(() => {
-    res.send("good");
+  dbUpload(containerName, fileName, ownerId, blobURL).then((msg) => {
+    console.log(msg);
+    res.send(msg);
   }).catch(err => {
     console.error(err);
-    res.send("bad");
+    res.status(400).send("Something went wrong!");
   });
-})
+});
 
-app.get("/getAll", async(req, res) => {
+app.post("/dbDelele", async (req, res) => {
+  const fileName = req.body.fileName;
+
+  deleteBlob(fileName).then((msg) => {
+    console.log(msg);
+    res.send(msg);
+  }).catch(err => {
+    console.error(err);
+    res.status(400).send("Something went wrong!");
+  });
+});
+
+app.get("/getAll", async (req, res) => {
   const blobs = await getContainerList()
   res.send(blobs);
 });
@@ -82,19 +98,15 @@ app.post('/upload', (req, res) => {
     if (err) {
       res.status(400).send("Something went wrong!");
     }
-    console.log(req.file);
-    console.log("localAccountId: "+req.body.localAccountId)
-    
-    uploadBlob(req.file, req.body.localAccountId).then(result => {
-      console.log(result);
-      res.send(result)
+
+    uploadBlob(req.body.containerName, req.file, req.body.localAccountId).then(msg => {
+      console.log(msg);
+      res.send(msg)
     }).catch(err => {
       console.error(err);
+      res.status(400).send("Something went wrong!");
     })
-
-    
   })
-
 });
 
 app.listen(PORT, () => {
