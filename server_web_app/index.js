@@ -93,9 +93,6 @@ app.post('/upload', (req, res) => {
       res.status(400).send("Something went wrong!");
     }
 
-    console.log("fileName: " + req.file);
-    console.log("localAccountId: " + req.body.localAccountId);
-
     uploadBlob(req.file, req.body.localAccountId).then(result => {
       console.log(result);
       res.send(result)

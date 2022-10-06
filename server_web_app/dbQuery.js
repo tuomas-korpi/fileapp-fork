@@ -67,4 +67,4 @@ async function dbDelete(fileName) {
   }
 }
 
-module.exports = { dbTest, dbUpload};
+module.exports = { dbTest, dbUpload, dbDelete};

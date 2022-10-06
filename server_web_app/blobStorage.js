@@ -1,6 +1,6 @@
 const { DefaultAzureCredential } = require("@azure/identity");
 const { BlobServiceClient, StorageSharedKeyCredential } = require("@azure/storage-blob");
-const { dbTest, dbUpload } = require('./dbQuery.js')
+const { dbTest, dbUpload, dbDelete } = require('./dbQuery.js')
 
 require('dotenv').config()
 const account = process.env.STOR_ACCOUNT;
@@ -90,6 +90,15 @@ const deleteBlob = async function (blobName) {
     const blockBlobClient = containerClient.getBlockBlobClient(blobName);
 
     const deleteBlobResponse = await blockBlobClient.delete(options);
+
+    //delete database record
+    dbDelete(blobName).then(() => {
+      ;
+    }).catch(err => {
+      console.error(err);
+      throw err;
+    });
+
     console.log(`Delete block blob ${blobName} successfully`, deleteBlobResponse.requestId);
   } catch (err) {
     throw err;
