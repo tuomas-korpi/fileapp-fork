@@ -1,10 +1,10 @@
 
 import axios from 'axios'
-const baseUrl = 'http://localhost:5000/blobs'
+const baseUrl = 'http://localhost:3001'
 //const baseUrl = '/api/blobs' 
 
 const getAll = () => {
-    const request = axios.get(baseUrl)
+    const request = axios.get(`${baseUrl}/dbTest`)
     return request.then(response => {
       console.log(response.data);
       return response.data

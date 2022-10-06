@@ -65,10 +65,12 @@ const uploadBlob = async function(blobFile, loacalAccountId) {
     const blobUrl = `https://storcafla426wsqmw.blob.core.windows.net/${containerName}/${blobName}`
     console.log(blobUrl);
   console.log(`Upload block blob ${blobName} successfully`, uploadBlobResponse);
-  //const msg = `Upload block blob ${blobName} successfully`;
-  return uploadBlobResponse
+  const msg = `Upload block blob ${blobName} successfully`;
+  return msg
   }catch(err){
-    console.log("Error uplosd");
+    const msg = "Upload Error"
+    console.log(msg);
+    return msg
   }
 
 }

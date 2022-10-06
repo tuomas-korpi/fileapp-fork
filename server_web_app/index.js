@@ -77,7 +77,6 @@ app.get("/getAll", async(req, res) => {
 //Multer parses form data
 let multer = require('multer');
 let upload = multer().single("file");
-//let getTenantId = multer().single("tenantId");
 app.post('/upload', (req, res) => {
   upload(req, res, (err) => {
     if (err) {
@@ -86,17 +85,15 @@ app.post('/upload', (req, res) => {
     console.log(req.file);
     console.log("localAccountId: "+req.body.localAccountId)
     
-    const up = uploadBlob(req.file, req.body.localAccountId)
-    //onsole.log(up.status);
-    res.send(up)
-  })
+    uploadBlob(req.file, req.body.localAccountId).then(result => {
+      console.log(result);
+      res.send(result)
+    }).catch(err => {
+      console.error(err);
+    })
 
-/*   getTenantId(req, res, (err) => {
-    if (err) {
-      res.status(400).send("Something went wrong!");
-    }
-    console.log("TENANT ID: "+req.tenantId);
-  }) */
+    
+  })
 
 });
 
