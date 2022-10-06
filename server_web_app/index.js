@@ -60,11 +60,12 @@ app.get("/dbTest", async (req, res) => {
 
 app.post("/dbUpload", async (req, res) => {
   const containerName = req.body.containerName;
+  containerName = "class1";
   const fileName = req.body.fileName;
   const ownerId = req.body.ownerId;
-  const blobURL = req.body.blobURL;
+  const blobUrl = req.body.blobUrl;
 
-  dbUpload(containerName, fileName, ownerId, blobURL).then((msg) => {
+  dbUpload(containerName, fileName, ownerId, blobUrl).then((msg) => {
     console.log(msg);
     res.send(msg);
   }).catch(err => {
@@ -74,9 +75,10 @@ app.post("/dbUpload", async (req, res) => {
 });
 
 app.post("/dbDelele", async (req, res) => {
+  const containerName = req.body.containerName;
   const fileName = req.body.fileName;
 
-  deleteBlob(fileName).then((msg) => {
+  deleteBlob(containerName, fileName).then((msg) => {
     console.log(msg);
     res.send(msg);
   }).catch(err => {
