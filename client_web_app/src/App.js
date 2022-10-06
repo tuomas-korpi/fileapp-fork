@@ -9,7 +9,7 @@ import { PageLayout } from "./components/PageLayout";
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from "@azure/msal-react";
 import { loginRequest } from "./authConfig";
 import Button from "react-bootstrap/Button";
-import DisplayFiles from "./components/DisplayFiles";
+//import DisplayFiles from "./components/DisplayFiles";
 
 
 
@@ -66,7 +66,7 @@ function ProfileContent() {
         <p>No Access token</p>
       }
       <Upload localAccountId={localAccountId} />
-      <DisplayFiles  />
+     {/*  <DisplayFiles  /> */}
     </>
   );
 };

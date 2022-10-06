@@ -1,12 +1,13 @@
 import React from "react"
 import { useState, useEffect } from "react";
 import axios from 'axios';
-
+import DisplayFiles from "./DisplayFiles";
 
 const baseUrl = "http://localhost:3001"
 
 export default function Upload({localAccountId}) {
     const [file, setFile] = useState()
+    const [uploaded, setUploaded] = useState(false)
     function handleChange(event) {
         setFile(event.target.files[0])
     }
@@ -31,6 +32,7 @@ export default function Upload({localAccountId}) {
             }
         }).then(results => {
             alert(JSON.stringify(results.data));
+            setUploaded(true)
           }).catch(err => {
             alert("Upload Error");
           })
@@ -47,7 +49,7 @@ export default function Upload({localAccountId}) {
                     <button type="submit">Upload</button>
                 </form>
             </div>
-            
+            <DisplayFiles uploaded={uploaded} />
             </>
         )
     

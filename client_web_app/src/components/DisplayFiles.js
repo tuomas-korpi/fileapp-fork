@@ -4,12 +4,12 @@ import axios from 'axios';
 import blobs from "./blobs"
 
 
-export default function DisplayFiles({newBlob}) {
+export default function DisplayFiles({uploaded}) {
     const [container, setContainers] = useState([]);
     const [blob, setBlob] = useState([]);
     const [loading, setLoading] = useState(false);
-  
-  
+    
+    console.log("UPLOADED: " + uploaded);
     //GET
     useEffect(() => {
       console.log('effect')
