@@ -36,9 +36,6 @@ export default function Upload({ localAccountId }) {
 
 
     async function handleSubmit(event) {
-        console.log("SELECTED CONT: ", selectedContainer);
-        console.log(typeof file);
-        console.log("localAccountId IN UPLOAD:", localAccountId);
         event.preventDefault()
         const url = `${baseUrl}/upload`;
         console.log(file);
