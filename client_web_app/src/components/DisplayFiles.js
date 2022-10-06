@@ -17,6 +17,9 @@ export default function DisplayFiles({ uploaded }) {
         console.log('effect')
         getBlob()
     }, [])
+    useEffect(() => {
+        getBlob()
+    }, [uploaded])
 
     const getBlob = async () => {
         setLoading(true);
@@ -40,8 +43,12 @@ export default function DisplayFiles({ uploaded }) {
                 fileName: FileName
             })
             .then(function (response) {
-                    console.log("delete Response: ", response.data);
-                    console.log('Deleted');
+                    console.log("delete Response: ", response.status);
+                    //If succesfully deletes, delete item from UI
+                    if(response.status == 200){
+                        console.log('Deleted');
+                        setBlob(blob.filter(p => p.BlobURL !== BlobURL))
+                    }
                 })
         } else {
             // Do nothing if alert window select close!
