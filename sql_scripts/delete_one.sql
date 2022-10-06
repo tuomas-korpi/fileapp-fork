@@ -1,1 +1,1 @@
-DELETE FROM Files WHERE FileName = 'LICENSE';
+DELETE FROM Files WHERE FileName = 'testFileName1' AND ContainerName = 'testContainer1';
