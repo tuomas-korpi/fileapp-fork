@@ -1,11 +1,10 @@
-
 // server/index.js
 
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const multipart = require("parse-multipart");
-const { getContainerList, uploadBlob } = require('./blobStorage.js')
-const { dbTest, dbUpload } = require('./dbQuery.js')
+const { getContainerList, uploadBlob, deleteBlob } = require('./blobStorage.js');
+const { dbTest, dbUpload } = require('./dbQuery.js');
 
 
 const express = require("express");
@@ -46,7 +45,7 @@ app.get("/getFilesByOwnerId/:ownerId", async (req, res) => {
   });
 
   res.send(files);
-})
+});
 
 app.get("/dbTest", async (req, res) => {
   dbTest().then(results => {
@@ -54,7 +53,7 @@ app.get("/dbTest", async (req, res) => {
   }).catch(err => {
     console.error(err);
   })
-})
+});
 
 app.post("/dbUpload", async (req, res) => {
   const fileName = req.body.fileName;
@@ -67,7 +66,18 @@ app.post("/dbUpload", async (req, res) => {
     console.error(err);
     res.send("bad");
   });
-})
+});
+
+app.post("/dbDelele", async (req, res) => {
+  const fileName = req.body.fileName;
+
+  deleteBlob(fileName).then(() => {
+    res.send("good");
+  }).catch(err => {
+    console.error(err);
+    res.send("bad");
+  });
+});
 
 app.get("/getAll", async (req, res) => {
   const blobs = await getContainerList()
@@ -86,11 +96,11 @@ app.post('/upload', (req, res) => {
 
     try {
       const up = uploadBlob(req.file, req.body.localAccountId);
-      res.send(up)
+      res.send(up);
     } catch (err) {
       res.status(400).send("Something went wrong!");
     }
-  })
+  });
 
   /*   getTenantId(req, res, (err) => {
       if (err) {

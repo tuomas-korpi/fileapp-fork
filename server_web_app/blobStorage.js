@@ -79,8 +79,21 @@ const uploadBlob = async function (blobFile, loacalAccountId) {
   }
 }
 
+const deleteBlob = async function (blobName) {
+  try {
+    const options = {
+      deleteSnapshots: 'include' // or 'only'
+    }
 
+    const containerName = "class1";
+    const containerClient = blobServiceClient.getContainerClient(containerName);
+    const blockBlobClient = containerClient.getBlockBlobClient(blobName);
 
+    const deleteBlobResponse = await blockBlobClient.delete(options);
+    console.log(`Delete block blob ${blobName} successfully`, deleteBlobResponse.requestId);
+  } catch (err) {
+    throw err;
+  }
+}
 
-
-module.exports = { getContainerList, uploadBlob }
+module.exports = { getContainerList, uploadBlob, deleteBlob }

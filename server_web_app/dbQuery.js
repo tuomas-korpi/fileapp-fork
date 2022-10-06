@@ -53,5 +53,18 @@ async function dbUpload(fileName, ownerId, blobUrl) {
   }
 }
 
+async function dbDelete(fileName) {
+  let pool = await sql.connect(sqlConfig);
+  try {
+    const request = await pool.request()
+    .input('FileName', sql.NVarChar, fileName)
+    .query('DELETE FROM Files WHERE FileName = @FileName;');
+  } catch (err) {
+    // ... error checks
+    throw err;
+  } finally {
+    pool.close();
+  }
+}
 
 module.exports = { dbTest, dbUpload};
