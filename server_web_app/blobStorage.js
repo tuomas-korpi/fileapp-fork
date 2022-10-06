@@ -54,23 +54,19 @@ const getBlobList = async function (containerName) {
 
 
 const uploadBlob = async function (blobFile, loacalAccountId) {
-
   try {
     const containerName = "class1";
     const containerClient = blobServiceClient.getContainerClient(containerName);
     const blobName = blobFile.originalname
-    // console.log(blobFile.originalname);
+
     const content = blobFile.buffer
     const blockBlobClient = containerClient.getBlockBlobClient(blobName);
     const uploadBlobResponse = await blockBlobClient.upload(content, content.length);
-    //url construction https://storcafla426wsqmw.blob.core.windows.net/class1/azuresql.png
-    const blobUrl = `https://storcafla426wsqmw.blob.core.windows.net/${containerName}/${blobName}`
-    // console.log(blobUrl);
+
     console.log(`Upload block blob ${blobName} successfully`);
-    //const msg = `Upload block blob ${blobName} successfully`;
 
     // write into database
-    dbInsertTest(blobName, loacalAccountId, blobUrl).then(() => {
+    dbInsertTest(blobName, loacalAccountId, blockBlobClient.url).then(() => {
       console.log("Successfully upload file!");
     }).catch(err => {
       console.error(err);
@@ -81,7 +77,6 @@ const uploadBlob = async function (blobFile, loacalAccountId) {
   } catch (err) {
     throw err;
   }
-
 }
 
 
