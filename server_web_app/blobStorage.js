@@ -51,10 +51,10 @@ const getBlobList = async function (containerName) {
 
 
 
-const uploadBlob = async function(blobFile, loacalAccountId) {
+const uploadBlob = async function(blobFile, loacalAccountId, selectedContainer) {
 
   try{
-  const containerName = "class1";
+  const containerName = selectedContainer;
   const containerClient = blobServiceClient.getContainerClient(containerName);
   const blobName = blobFile.originalname
   console.log(blobFile.originalname);

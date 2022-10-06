@@ -23,7 +23,7 @@ export default function DisplayFiles({uploaded}) {
   
     const getBlob = async () => {
       setLoading(true);
-      blobs.getAll().then(initialBlobs => {
+      blobs.getSQL().then(initialBlobs => {
         console.log(initialBlobs);
         setBlob(initialBlobs)
         console.log(blob);

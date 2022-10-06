@@ -69,7 +69,7 @@ app.post("/dbInsertTest", async (req, res) => {
   });
 })
 
-app.get("/getAll", async(req, res) => {
+app.get("/getContainer", async(req, res) => {
   const blobs = await getContainerList()
   res.send(blobs);
 });
@@ -84,8 +84,10 @@ app.post('/upload', (req, res) => {
     }
     console.log(req.file);
     console.log("localAccountId: "+req.body.localAccountId)
+    console.log("container: "+req.body.selectedContainer)
     
-    uploadBlob(req.file, req.body.localAccountId).then(result => {
+    
+    uploadBlob(req.file, req.body.localAccountId, req.body.selectedContainer).then(result => {
       console.log(result);
       res.send(result)
     }).catch(err => {
