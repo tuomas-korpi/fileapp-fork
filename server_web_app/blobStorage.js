@@ -53,9 +53,8 @@ const getBlobList = async function (containerName) {
 
 
 
-const uploadBlob = async function (blobFile, loacalAccountId) {
+const uploadBlob = async function (containerName, blobFile, loacalAccountId) {
   try {
-    const containerName = "class1";
     const containerClient = blobServiceClient.getContainerClient(containerName);
     const blobName = blobFile.originalname
 
@@ -79,13 +78,12 @@ const uploadBlob = async function (blobFile, loacalAccountId) {
   }
 }
 
-const deleteBlob = async function (blobName) {
+const deleteBlob = async function (containerName, blobName) {
   try {
     const options = {
       deleteSnapshots: 'include' // or 'only'
     }
 
-    const containerName = "class1";
     const containerClient = blobServiceClient.getContainerClient(containerName);
     const blockBlobClient = containerClient.getBlockBlobClient(blobName);
 
@@ -99,7 +97,8 @@ const deleteBlob = async function (blobName) {
       throw err;
     });
 
-    console.log(`Delete block blob ${blobName} successfully`, deleteBlobResponse.requestId);
+    const msg = `Delete block blob ${blobName} successfully`;
+    return msg;
   } catch (err) {
     throw err;
   }

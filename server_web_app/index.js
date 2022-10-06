@@ -59,26 +59,29 @@ app.get("/dbTest", async (req, res) => {
 });
 
 app.post("/dbUpload", async (req, res) => {
+  const containerName = req.body.containerName;
   const fileName = req.body.fileName;
   const ownerId = req.body.ownerId;
   const blobURL = req.body.blobURL;
 
-  dbUpload(fileName, ownerId, blobURL).then(() => {
-    res.send("good");
+  dbUpload(containerName, fileName, ownerId, blobURL).then((msg) => {
+    console.log(msg);
+    res.send(msg);
   }).catch(err => {
     console.error(err);
-    res.send("bad");
+    res.status(400).send("Something went wrong!");
   });
 });
 
 app.post("/dbDelele", async (req, res) => {
   const fileName = req.body.fileName;
 
-  deleteBlob(fileName).then(() => {
-    res.send("good");
+  deleteBlob(fileName).then((msg) => {
+    console.log(msg);
+    res.send(msg);
   }).catch(err => {
     console.error(err);
-    res.send("bad");
+    res.status(400).send("Something went wrong!");
   });
 });
 
@@ -96,12 +99,12 @@ app.post('/upload', (req, res) => {
       res.status(400).send("Something went wrong!");
     }
 
-    uploadBlob(req.file, req.body.localAccountId).then(result => {
-      console.log(result);
-      res.send(result)
+    uploadBlob(req.body.containerName, req.file, req.body.localAccountId).then(msg => {
+      console.log(msg);
+      res.send(msg)
     }).catch(err => {
       console.error(err);
-      res.send("Something went wrong!");
+      res.status(400).send("Something went wrong!");
     })
   })
 });
