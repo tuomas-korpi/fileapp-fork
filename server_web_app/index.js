@@ -5,7 +5,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const multipart = require("parse-multipart");
 const { getContainerList, uploadBlob } = require('./blobStorage.js')
-const { dbTest, dbInsertTest } = require('./dbQuery.js')
+const { dbTest, dbUploadInsert } = require('./dbQuery.js')
 
 
 const express = require("express");
@@ -56,12 +56,12 @@ app.get("/dbTest", async (req, res) => {
   })
 })
 
-app.post("/dbInsertTest", async (req, res) => {
+app.post("/dbUploadInsert", async (req, res) => {
   const fileName = req.body.fileName;
   const ownerId = req.body.ownerId;
   const blobURL = req.body.blobURL;
 
-  dbInsertTest(fileName, ownerId, blobURL).then(() => {
+  dbUploadInsert(fileName, ownerId, blobURL).then(() => {
     res.send("good");
   }).catch(err => {
     console.error(err);
