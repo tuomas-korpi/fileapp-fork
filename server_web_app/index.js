@@ -27,18 +27,21 @@ app.get("/getFilesByOwnerId/:ownerId", async (req, res) => {
   console.log(ownerId);
 
   files.push({
+    "containerName": "testContainer1",
     "fileName": "testFile1",
     "ownerId": "testUser1",
     "blobURL": "https://file1.url"
   });
 
   files.push({
+    "containerName": "testContainer2",
     "fileName": "testFile2",
     "ownerId": "testUser2",
     "blobURL": "https://file2.url"
   });
 
   files.push({
+    "containerName": "testContainer3",
     "fileName": "testFile3",
     "ownerId": "testUser3",
     "blobURL": "https://file3.url"
