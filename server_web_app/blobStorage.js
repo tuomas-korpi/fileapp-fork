@@ -31,7 +31,10 @@ const getContainerList = async function () {
 const getBlobList = async function (containerName) {
 
 
+
+
   console.log("\nListing blobs...");
+
   const containerClient = blobServiceClient.getContainerClient(containerName);
   //blob properties
   blobArr = []

@@ -74,6 +74,7 @@ app.post("/dbUpload", async (req, res) => {
   });
 });
 
+
 app.post("/dbDelele", async (req, res) => {
   const containerName = req.body.containerName;
   const fileName = req.body.fileName;
@@ -87,7 +88,8 @@ app.post("/dbDelele", async (req, res) => {
   });
 });
 
-app.get("/getAll", async (req, res) => {
+app.get("/getContainer", async (req, res) => {
+
   const blobs = await getContainerList()
   res.send(blobs);
 });
@@ -101,9 +103,11 @@ app.post('/upload', (req, res) => {
       res.status(400).send("Something went wrong!");
     }
 
+
     uploadBlob(req.body.containerName, req.file, req.body.localAccountId).then(msg => {
       console.log(msg);
       res.send(msg)
+
     }).catch(err => {
       console.error(err);
       res.status(400).send("Something went wrong!");

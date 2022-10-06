@@ -9,6 +9,7 @@ import { PageLayout } from "./components/PageLayout";
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from "@azure/msal-react";
 import { loginRequest } from "./authConfig";
 import Button from "react-bootstrap/Button";
+//import DisplayFiles from "./components/DisplayFiles";
 
 
 
@@ -65,98 +66,22 @@ function ProfileContent() {
         <p>No Access token</p>
       }
       <Upload localAccountId={localAccountId} />
+     {/*  <DisplayFiles  /> */}
     </>
   );
 };
 
 
 
-
-
-
 function App() {
-  const [container, setContainers] = useState([]);
-  const [blob, setBlob] = useState([]);
-  const [loading, setLoading] = useState(false);
 
-
-  //GET
-  useEffect(() => {
-    console.log('effect')
-    //getSQL
-    /*       axios.get('http://localhost:3001/dbTest').then(resp => {
-    
-        console.log(resp.data);
-    }); */
-    getBlob()
-  }, [])
-
-  const getBlob = async () => {
-    setLoading(true);
-    blobs.getAll().then(initialBlobs => {
-      console.log(initialBlobs);
-      setBlob(initialBlobs)
-      console.log(blob);
-      setLoading(false);
-    })
-  }
-
-
-
-  //DELETE storage based on url - event syncs the sql
-  const handleDelete = (event, id) => {
-    blobs.remove(id).then(returnedBlob => {
-      console.log(returnedBlob);
-      setBlob(blob.filter(p => p.id !== id))
-    })
-  }
 
 
   return (
     <PageLayout>
       <AuthenticatedTemplate>
         <ProfileContent />
-        <div className="App">
-          <h1>My Files</h1>
-                     {loading ? (
-            <div>...Data Loading.....</div>
-          ) : (
-            <table>
-              <tbody>
-                <tr>
-                  <th>File name</th>
-                  <th>Owner Id</th>
-                  <th>Blob url</th>
-                  <th>delete</th>
-                </tr>
-                {blob.map(x =>
-                  <tr key={Math.random() * 9999}>
-                    <td key={Math.random() * 9999}>
-                      {x.FileName}
-                    </td>
-                    <td key={Math.random() * 9999}>
-                      {x.OwnerId}
-                    </td>
-                    <td key={Math.random() * 9999}>
-                      {x.BlobURL}
-                    </td>
-                    <td key={Math.random() * 9999}>
-                      <button onClick={event => handleDelete(event, x.id)}>
-                        delete
-                      </button>
-                    </td>
-                  </tr>
-                )
-                }
-              </tbody>
-            </table>)} 
-
-
-          <hr />
-
-
-
-        </div>
+       
       </AuthenticatedTemplate>
       <UnauthenticatedTemplate>
         <p>You are not signed in! Please sign in.</p>
