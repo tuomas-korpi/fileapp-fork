@@ -50,16 +50,11 @@ function ProfileContent() {
       });
     });
 
-  
-    
-
   }
-
-  
 
   //console.log("Access token: ", accessToken);
   console.log("Accounts: ", accounts);
-  console.log("TENANTS ID: ", localAccountId);
+  console.log("TLocal account ID: ", localAccountId);
 
 
   return (
