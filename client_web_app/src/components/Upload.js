@@ -102,9 +102,12 @@ export default function Upload({ localAccountId }) {
     // otherwise no write permission
     } else {
         return (
-            <div className="App" >
-                <h1>You have no permission to write files!</h1>
-            </div>
+            <>
+                <div className="App" >
+                    <h1>You have no permission to write files!</h1>
+                </div>
+                <DisplayFiles uploaded={uploaded} />
+            </>
         );
     }
 
