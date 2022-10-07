@@ -12,12 +12,7 @@ import Button from "react-bootstrap/Button";
 //import DisplayFiles from "./components/DisplayFiles";
 
 
-
-//change proxy too
-const baseUrl = "http://localhost:3001"
-//const baseUrl = "https://api321tuomas.azurewebsites.net"
-
-
+//Profile content component only accessable after Auth
 function ProfileContent() {
   const { instance, accounts, inProgress } = useMsal();
   const [accessToken, setAccessToken] = useState(null);
@@ -27,9 +22,7 @@ function ProfileContent() {
 
   useEffect(() => {
     RequestAccessToken()
-
   }, [])
-
 
 
   function RequestAccessToken() {
@@ -38,7 +31,7 @@ function ProfileContent() {
       account: accounts[0]
     };
 
-    // Silently acquires an access token which is then attached to a request for Microsoft Graph data
+    // Silently acquires an access token 
     instance.acquireTokenSilent(request).then((response) => {
       setAccessToken(response.accessToken);
       setLocalAccountId(accounts[0].localAccountId)
@@ -52,10 +45,6 @@ function ProfileContent() {
 
   }
 
-  //console.log("Access token: ", accessToken);
-  console.log("Accounts: ", accounts);
-  console.log("TLocal account ID: ", localAccountId);
-
 
   return (
     <>
@@ -66,7 +55,7 @@ function ProfileContent() {
         <p>No Access token</p>
       }
       <Upload localAccountId={localAccountId} />
-     {/*  <DisplayFiles  /> */}
+  
     </>
   );
 };
@@ -75,13 +64,10 @@ function ProfileContent() {
 
 function App() {
 
-
-
   return (
     <PageLayout>
       <AuthenticatedTemplate>
         <ProfileContent />
-       
       </AuthenticatedTemplate>
       <UnauthenticatedTemplate>
         <p>You are not signed in! Please sign in.</p>

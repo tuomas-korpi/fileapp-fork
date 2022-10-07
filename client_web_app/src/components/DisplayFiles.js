@@ -3,14 +3,12 @@ import { useState, useEffect } from "react";
 import axios from 'axios';
 import blobs from "./blobs"
 
+const baseUrl = process.env.REACT_APP_API_URL
 
 export default function DisplayFiles({ uploaded }) {
     const [container, setContainers] = useState([]);
     const [blob, setBlob] = useState([]);
     const [loading, setLoading] = useState(false);
-
-    const baseUrl = "http://localhost:3001"
-
     console.log("UPLOADED: " + uploaded);
     //GET
     useEffect(() => {

@@ -93,7 +93,7 @@ const deleteBlob = async function (containerName, blobName) {
     const deleteBlobResponse = await blockBlobClient.delete(options);
 
     //delete database record
-    dbDelete(blobName).then(() => {
+    dbDelete(containerName, blobName).then(() => {
       ;
     }).catch(err => {
       console.error(err);

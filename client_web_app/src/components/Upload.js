@@ -4,7 +4,8 @@ import axios from 'axios';
 import DisplayFiles from "./DisplayFiles";
 import blobs from "./blobs";
 
-const baseUrl = "http://localhost:3001"
+//Change proxy too 
+const baseUrl = process.env.REACT_APP_API_URL
 
 export default function Upload({ localAccountId }) {
     const [file, setFile] = useState()
