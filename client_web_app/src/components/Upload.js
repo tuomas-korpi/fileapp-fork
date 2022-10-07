@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import axios from 'axios';
 import DisplayFiles from "./DisplayFiles";
 import blobs from "./blobs";
+import { useMsal } from "@azure/msal-react";
+import { hasBlobWrite, hasBlobRead } from "./rbac";
 
 //Change proxy too 
 const baseUrl = process.env.REACT_APP_API_URL
@@ -12,6 +14,9 @@ export default function Upload({ localAccountId }) {
     const [uploaded, setUploaded] = useState(false)
     const [containers, setContainer] = useState([])
     const [selectedContainer, setSelectedContainer] = useState()
+
+    // retrieve account roles
+    const { instance } = useMsal();
 
     //Handle file selection
     function handleChange(event) {
@@ -25,14 +30,21 @@ export default function Upload({ localAccountId }) {
     }
     //Get all containers here 
     useEffect(() => {
-        console.log('effect')
-        blobs.getContainer().then(conts => {
-            console.log(conts);
-            setContainer(conts)
-            setSelectedContainer(conts[0].contName)
-            console.log("CONTAINERS:", containers);
 
-        })
+        // if has write permission
+        if (hasBlobWrite(instance)) {
+            console.log('effect')
+            blobs.getContainer().then(conts => {
+                console.log(conts);
+                setContainer(conts)
+                setSelectedContainer(conts[0].contName)
+                console.log("CONTAINERS:", containers);
+
+            })
+        //otherwise no write permission
+        } else {
+            setContainer([]);
+        }
     }, [])
 
 
@@ -62,29 +74,38 @@ export default function Upload({ localAccountId }) {
   
     }
 
-
-    return (
-        <>
-            <div  style={{ paddingBottom: 100 }}>
-                <form className="uploadForm" onSubmit={handleSubmit}>
-                    <h1>File Upload</h1>
-                    <label style={{ paddingBottom: 10 }}>Choose a Conainer</label>
-                    <select
-                        style={{ marginBottom: 10 }}
-                        onChange={handleSelect}
-                        value={selectedContainer}>
-                        {containers.map((x, i) =>
-                            <option key={i} value={x.contName}>{x.contName}</option>
-                        )}
-                    </select>
-                    <input encType="multipart/form-data" name="file" type="file" 
-                            onChange={handleChange} 
-                            style={{ marginBottom: 10 }}/>
-                    <button type="submit">Upload</button>
-                </form>
+    // if has write permission
+    if (hasBlobWrite(instance)) {
+        return (
+            <>
+                <div  style={{ paddingBottom: 100 }}>
+                    <form className="uploadForm" onSubmit={handleSubmit}>
+                        <h1>File Upload</h1>
+                        <label style={{ paddingBottom: 10 }}>Choose a Conainer</label>
+                        <select
+                            style={{ marginBottom: 10 }}
+                            onChange={handleSelect}
+                            value={selectedContainer}>
+                            {containers.map((x, i) =>
+                                <option key={i} value={x.contName}>{x.contName}</option>
+                            )}
+                        </select>
+                        <input encType="multipart/form-data" name="file" type="file" 
+                                onChange={handleChange} 
+                                style={{ marginBottom: 10 }}/>
+                        <button type="submit">Upload</button>
+                    </form>
+                </div>
+                <DisplayFiles uploaded={uploaded} />
+            </>
+        );
+    // otherwise no write permission
+    } else {
+        return (
+            <div className="App" >
+                <h1>You have no permission to write files!</h1>
             </div>
-            <DisplayFiles uploaded={uploaded} />
-        </>
-    )
+        );
+    }
 
 }

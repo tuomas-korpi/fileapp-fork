@@ -1,7 +1,9 @@
 import React from "react"
 import { useState, useEffect } from "react";
+import { useMsal } from "@azure/msal-react";
 import axios from 'axios';
-import blobs from "./blobs"
+import blobs from "./blobs";
+import { hasBlobWrite, hasBlobRead } from "./rbac";
 
 const baseUrl = process.env.REACT_APP_API_URL
 
@@ -19,14 +21,23 @@ export default function DisplayFiles({ uploaded }) {
         getBlob()
     }, [uploaded])
 
+    // retrieve account roles
+    const { instance } = useMsal();
+
     const getBlob = async () => {
-        setLoading(true);
-        blobs.getSQL().then(initialBlobs => {
-            console.log(initialBlobs);
-            setBlob(initialBlobs)
-            console.log(blob);
-            setLoading(false);
-        })
+        // if has read permission
+        if (hasBlobRead(instance)) {
+            setLoading(true);
+            blobs.getSQL().then(initialBlobs => {
+                console.log(initialBlobs);
+                setBlob(initialBlobs)
+                console.log(blob);
+                setLoading(false);
+            })
+        //otherwise no read permission
+        } else {
+            setBlob([]);
+        }
     }
 
 
@@ -54,52 +65,59 @@ export default function DisplayFiles({ uploaded }) {
         }
     }
 
-
-
-    return (
-        <div className="App" >
-            <h1>All Files</h1>
-            <div className="tableContainer">
-            {loading ? (
-                <div>...Data Loading.....</div>
-            ) : (
-                
-                <table className="fileTable">
-                    <tbody>
-                        <tr>
-                            <th>Container</th>
-                            <th>File name</th>
-                            <th>Owner Id</th>
-                            <th>Blob url</th>
-                            <th>delete</th>
-                        </tr>
-                        {blob.map(x =>
-                            <tr key={Math.random() * 9999}>
-                                <td key={Math.random() * 9999}>
-                                    {x.ContainerName}
-                                </td>
-                                <td key={Math.random() * 9999}>
-                                    {x.FileName}
-                                </td>
-                                <td key={Math.random() * 9999}>
-                                    {x.OwnerId}
-                                </td>
-                                <td key={Math.random() * 9999}>
-                                    {x.BlobURL}
-                                </td>
-                                <td key={Math.random() * 9999}>
-                                    <button className="deleteBtn" onClick={event => handleDelete(event, x.BlobURL, x.FileName, x.ContainerName)}>
-                                        delete
-                                    </button>
-                                </td>
+    // if has read permission
+    if (hasBlobRead(instance)) {
+        return (
+            <div className="App" >
+                <h1>All Files</h1>
+                <div className="tableContainer">
+                {loading ? (
+                    <div>...Data Loading.....</div>
+                ) : (
+                    
+                    <table className="fileTable">
+                        <tbody>
+                            <tr>
+                                <th>Container</th>
+                                <th>File name</th>
+                                <th>Owner Id</th>
+                                <th>Blob url</th>
+                                <th>delete</th>
                             </tr>
-                        )
-                        }
-                    </tbody>
-                </table>)}
-                </div>
-            <hr />
-        </div>
-    )
-
+                            {blob.map(x =>
+                                <tr key={Math.random() * 9999}>
+                                    <td key={Math.random() * 9999}>
+                                        {x.ContainerName}
+                                    </td>
+                                    <td key={Math.random() * 9999}>
+                                        {x.FileName}
+                                    </td>
+                                    <td key={Math.random() * 9999}>
+                                        {x.OwnerId}
+                                    </td>
+                                    <td key={Math.random() * 9999}>
+                                        {x.BlobURL}
+                                    </td>
+                                    <td key={Math.random() * 9999}>
+                                        <button className="deleteBtn" onClick={event => handleDelete(event, x.BlobURL, x.FileName, x.ContainerName)}>
+                                            delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            )
+                            }
+                        </tbody>
+                    </table>)}
+                    </div>
+                <hr />
+            </div>
+        )
+    //otherwise no read permission
+    } else {
+        return (
+            <div className="App" >
+                <h1>You have no permission to read files!</h1>
+            </div>
+        )
+    }
 }
