@@ -37,6 +37,7 @@ export default function Upload({ localAccountId }) {
 
     async function handleSubmit(event) {
         event.preventDefault()
+        setUploaded(false)
         const url = `${baseUrl}/upload`;
         console.log(file);
         let formData = new FormData()
@@ -57,23 +58,27 @@ export default function Upload({ localAccountId }) {
         }).catch(err => {
             alert("Upload Error");
         })
+  
     }
 
 
     return (
         <>
-            <div style={{ paddingBottom: 100 }}>
-                <form onSubmit={handleSubmit}>
+            <div  style={{ paddingBottom: 100 }}>
+                <form className="uploadForm" onSubmit={handleSubmit}>
                     <h1>File Upload</h1>
-                    <label>Choose a Conainer</label>
+                    <label style={{ paddingBottom: 10 }}>Choose a Conainer</label>
                     <select
+                        style={{ marginBottom: 10 }}
                         onChange={handleSelect}
                         value={selectedContainer}>
                         {containers.map((x, i) =>
                             <option key={i} value={x.contName}>{x.contName}</option>
                         )}
                     </select>
-                    <input encType="multipart/form-data" name="file" type="file" onChange={handleChange} />
+                    <input encType="multipart/form-data" name="file" type="file" 
+                            onChange={handleChange} 
+                            style={{ marginBottom: 10 }}/>
                     <button type="submit">Upload</button>
                 </form>
             </div>
