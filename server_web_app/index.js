@@ -3,8 +3,14 @@
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const multipart = require("parse-multipart");
+const az_identity = require('@azure/identity')
+const az_keyvault = require('@azure/keyvault-secrets')
 const { getContainerList, uploadBlob, deleteBlob } = require('./blobStorage.js');
 const { dbTest, dbUpload } = require('./dbQuery.js');
+
+const credentials = new az_identity.DefaultAzureCredential()
+const client = new az_keyvault.SecretClient('https://teamaz-key-vault.vault.azure.net/',credentials)
+
 
 
 const express = require("express");
@@ -114,6 +120,22 @@ app.post('/upload', (req, res) => {
     })
   })
 });
+
+app.get('/key',(req,res)=>{
+
+  client.getSecret('SHARED-KEY').then(ress =>{
+
+    console.log('resssss ' ,ress, ress.name, ress.body);
+    const key_name = ress.name
+    const key_value = ress.value
+  res.json({key_name:key_value})
+  }).catch(e =>{
+    console.log(e);
+    res.json({"key_v":false})
+  })
+  
+  
+})
 
 app.get('/',(req,res)=>{
   res.json({"hello":"hello"})
