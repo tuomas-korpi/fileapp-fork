@@ -23,6 +23,12 @@ SQL_SERVER="CHANGEME"
 SQL_DATABASE="CHANGEME"
 ```
 
+# client web app
+## .env
+```
+REACT_APP_API_URL="CHANGEME"
+```
+
 
 # branches
 
