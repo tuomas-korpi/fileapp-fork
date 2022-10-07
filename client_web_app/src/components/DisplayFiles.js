@@ -21,9 +21,11 @@ export default function DisplayFiles({ uploaded }) {
         getBlob()
     }, [uploaded])
 
+    // retrieve account roles
     const { instance } = useMsal();
 
     const getBlob = async () => {
+        // if has read permission
         if (hasBlobRead(instance)) {
             setLoading(true);
             blobs.getSQL().then(initialBlobs => {
@@ -32,6 +34,7 @@ export default function DisplayFiles({ uploaded }) {
                 console.log(blob);
                 setLoading(false);
             })
+        //otherwise no read permission
         } else {
             setBlob([]);
         }
@@ -62,6 +65,7 @@ export default function DisplayFiles({ uploaded }) {
         }
     }
 
+    // if has read permission
     if (hasBlobRead(instance)) {
         return (
             <div className="App" >
@@ -108,6 +112,7 @@ export default function DisplayFiles({ uploaded }) {
                 <hr />
             </div>
         )
+    //otherwise no read permission
     } else {
         return (
             <div className="App" >
