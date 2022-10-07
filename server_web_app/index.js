@@ -115,6 +115,9 @@ app.post('/upload', (req, res) => {
   })
 });
 
+app.get('/',(req,res)=>{
+  res.json({"hello":"hello"})
+})
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
