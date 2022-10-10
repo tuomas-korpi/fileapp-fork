@@ -21,9 +21,12 @@ steps:
 - script: |
     pushd $(path)
     npm install
+  displayName: 'npm install'
+
+- script: |
     npm run build
     popd
-  displayName: 'npm install and build'
+  displayName: 'npm run build'
 
 
 - task: ArchiveFiles@2
