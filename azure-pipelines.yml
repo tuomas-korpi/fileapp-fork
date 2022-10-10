@@ -6,8 +6,8 @@
 trigger:
 - master
 variables:
-  path: '/client_web_app'
-  buildPath: '/client_web_app/build'
+  path: 'client_web_app'
+  buildPath: 'client_web_app/build'
 
 pool:
   vmImage: windows-latest
