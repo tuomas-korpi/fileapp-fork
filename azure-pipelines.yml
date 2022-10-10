@@ -19,13 +19,16 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
-    pushd $(path)
+    cd $(path)
     npm install
+    cd ..
   displayName: 'npm install'
 
 - script: |
+    cd $(path)
     npm run build
     popd
+    cd ..
   displayName: 'npm run build'
 
 
