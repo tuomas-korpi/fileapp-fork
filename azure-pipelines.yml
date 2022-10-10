@@ -5,6 +5,9 @@
 
 trigger:
 - master
+variables:
+  path: '/client_web_app'
+  buildPath: '/client_web_app/build'
 
 pool:
   vmImage: windows-latest
@@ -16,7 +19,23 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
-    cd client_web_app
+    pushd $(path)
     npm install
     npm run build
+    popd
   displayName: 'npm install and build'
+
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(buildPath)'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    replaceExistingArchive: true
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
