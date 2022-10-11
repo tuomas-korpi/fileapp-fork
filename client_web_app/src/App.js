@@ -11,7 +11,6 @@ import { loginRequest } from "./authConfig";
 import Button from "react-bootstrap/Button";
 //import DisplayFiles from "./components/DisplayFiles";
 
-
 //Profile content component only accessable after Auth
 function ProfileContent() {
   const { instance, accounts, inProgress } = useMsal();
@@ -47,7 +46,7 @@ function ProfileContent() {
 
   }
 
-
+//render after access token validation
   return (
     <>
       <h5 className="card-title">Welcome {name}</h5>
