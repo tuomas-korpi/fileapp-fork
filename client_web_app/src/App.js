@@ -71,7 +71,7 @@ function App() {
         <ProfileContent />
       </AuthenticatedTemplate>
       <UnauthenticatedTemplate>
-        <p>You are not signed in! Please sign in.</p>
+        <p>You are not signed in! Testing CIDC</p>
       </UnauthenticatedTemplate>
     </PageLayout>
   );
