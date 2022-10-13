@@ -2,7 +2,7 @@ trigger:
 - master
 variables:
   path: 'server_web_app'
-  buildPath: 'server_web_app/*'
+  buildPath: 'server_web_app/'
 
 pool:
   vmImage: windows-latest
